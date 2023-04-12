@@ -13,7 +13,7 @@ Okay, lets start from considering arbitrary React app diagram.
 
 We have a store and five red components uses it - A, B, C, D and E. Every red component has direct access to store,
 for example - hooks `useReducer` or `useSelector` in case of Redux. It is not important which state manager you use
-here - important that this components uses information about store's inner structure (for any data it have to know whrere
+here - it's important that components uses information about store's inner structure (for any data it has to know whrere
 exactly it is stored)
 
 Additional information - A and B related with same logic, and it's completely independent of C, D, E - works with 
@@ -28,14 +28,19 @@ too much store for component's test with other responsibility (even you don't wr
  one of code quality metrics)
 * onboarding of new team member takes more time - to work with any component you have to know all about store and
 how other components uses it. You can't localize your work and can't onboard in codebase part by part.
+* you cannot reuse your components - the C component can work with specific paths in store, the needs to get the similar
+view often leads to code duplication of C, D and E components. 
+have 
 
 Why this happened?
 Consider another picture - a diagram of connected components and look at it from the point
 of view of [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) and 
 [cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science)).
 
-To put it simply, the coupling is metric that refers to how much different modules of a system rely on e
-ach other, cohesion - refers to how closely related and focused the elements within a module are.
+To put it simply, the coupling is metric that refers to how much different modules of a system rely on each other, 
+cohesion - refers to how closely related and focused the elements within a module are. Low coupling and high cohesion
+are better in software because they make the code easier to work with and reduce the chances of unintended consequences 
+when making changes.
 
 
 ![arbitrary react app using store diagram](img/before_components.png)
