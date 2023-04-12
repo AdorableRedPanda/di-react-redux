@@ -68,14 +68,16 @@ To fix it we have to make component dependent only of abstraction and make speci
 
 ### In practice
 
-In other frameworks (like Ninject for .NET or Angular - strongly recommended to feel better how DI works) we have 
-DI container which working in compile time and replaces interfaces to classes realize it.
+In other frameworks such as Ninject for .NET or Angular (lets you get a feel for how DI works), a DI container is
+operates and replaces interfaces with class realizations during compile time.
+How to make it in React way - without classical compilation?
 
-How to make it in React way - without classical compilation? We have to create the DI container and 
-realization for it ourselves. The [React.Context](https://react.dev/learn/passing-data-deeply-with-context) works for
-it - originally it involved to avoid `props drilling`, it allows to get data in distant children by creating container and 
-providing value inside. We will use the context object as dependency marker (instead of interface) - the `useContext` hook or
-`Context.Consumer` allows to require realization by context and `Context.Provider` creates container for the realization.
+[React Context](https://react.dev/learn/passing-data-deeply-with-context) allows us to provide a value to a
+component tree without having to pass it down through every level of the tree - it can be used in conjunction with 
+other techniques to create a simple form of DI container.
+We will use the context object as dependency marker (instead of interface) to resolving dependency inside container.
+`useContext` hook or `Context.Consumer` can be used to require realization through the context, while `Context.
+Provider` can create a container for it.
 
 To simplify component-store relationships, we will adopt a straightforward approach. Components that use the store will
 require it as a specific abstraction based on business logic. For example, we can add two providers in the picture 
