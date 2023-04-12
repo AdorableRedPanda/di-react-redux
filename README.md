@@ -7,13 +7,15 @@ it is a burning question for many developers.
 I'm going to focus on the problem associated with the common practice of using a 
 state manager in React applications - not about any specific state-manager, but about approaches of its usages.
 
+## Average React state-management app troubles
+
 Okay, lets start from considering arbitrary React app diagram.
 
 ![arbitrary react app using store diagram](img/before_tree.png)
 
 We have a store and five red components uses it - A, B, C, D and E. Every red component has direct access to store,
 for example - hooks `useReducer` or `useSelector` in case of Redux. It is not important which state manager you use
-here - it's important that components uses information about store's inner structure (for any data it has to know whrere
+here - it's important that components uses information about store's inner structure (for any data it has to know where
 exactly it is stored)
 
 Additional information - A and B related with same logic, and it's completely independent of C, D, E - works with 
@@ -21,14 +23,15 @@ different interface elements and different store fields etc. (it's important det
 
 What's wrong with this app?
 * it is hard to understand which components are related by business logic, and which in are independent, for example -
- there is no information about D and E components, they are not self-documented
+ there is no information about D and E components (of course, you can find all paths in store they use and compare), 
+they are not self-documented
 * all components have shared state - if you work with one of them, you can create bug in any other 
 * as above, to test any component you have to write test scenario, mocks for store and expected store state - 
 too much store for component's test with other responsibility (even you don't write tests - component testability is 
  one of code quality metrics)
 * onboarding of new team member takes more time - to work with any component you have to know all about store and
 how other components uses it. You can't localize your work and can't onboard in codebase part by part.
-* you cannot reuse your components - the C component can work with specific paths in store, the needs to get the similar
+* you cannot reuse your components - the C component can work with concrete paths in store, the needs to get the similar
 view often leads to code duplication of C, D and E components. 
 have 
 
@@ -43,7 +46,7 @@ are better in software because they make the code easier to work with and reduce
 when making changes.
 
 
-![arbitrary react app using store diagram](img/before_components.png)
+![arbitrary react app relations diagram](img/before_relations.png)
 
 What we have here? The picture looks very simple - with only six components but:
 * there is no modules in code (remember, A and B related in business-logic) - all components are piled together
@@ -52,7 +55,43 @@ What we have here? The picture looks very simple - with only six components but:
 And it's ok, the component's independence and unidirectional data flow in React allows us to live with the worst structure
 store usage. The cost - mo bugs, more code, fragile development and long onboarding.
 
-How to fix it?
+## How to fix it?
 
+### Theoretically 
 All the troubles we have in example is result of violation of on of SOLID principles - dependency inversion.
+I will use this states:
+* High-level modules should not use anything from low-level modules. Both should depend on abstractions.
+* Abstractions should not depend on implementations. Implementations should depend on abstractions.
 
+If some component uses direct access to store - it uses the store realization with concrete paths and data.
+To fix it we have to make component dependent only of abstraction and make special way to store realize it.
+
+### In practice
+
+In other frameworks (like Ninject for .NET or Angular - strongly recommended to feel better how DI works) we have 
+DI container which working in compile time and replaces interfaces to classes realize it.
+
+How to make it in React way - without classical compilation? We have to create the DI container and 
+realization for it ourselves. The [React.Context](https://react.dev/learn/passing-data-deeply-with-context) works for
+it - originally it involved to avoid `props drilling`, it allows to get data in distant children by creating container and 
+providing value inside. We will use the context object as dependency marker (instead of interface) - the `useContext` hook or
+`Context.Consumer` allows to require realization by context and `Context.Provider` creates container for the realization.
+
+To simplify component-store relationships, we will adopt a straightforward approach. Components that use the store will
+require it as a specific abstraction based on business logic. For example, we can add two providers in the picture 
+below, one for data used by A and B components and another for data used by C, D, and E components. The providers have 
+direct access to the store, and therefore are colored red, while the other components are colored based on the 
+corresponding provider.
+
+![react app tree with providers diagram](img/after_tree.png)
+
+What we got now:
+* separating components into independent green and blue groups, technical level dependencies between components are 
+minimized and the risk of bugs is reduced
+* writing tests for these components is simplified, as they don't rely on any store knowledge
+* these components can be easily reused with different data by changing the realization on the provider level
+* this approach makes it easier to onboard new team members since they can understand and work on each module separately
+*  by analyzing the abstraction level used in components, it's easier to understand whether they are related or not
+
+The diagram of relations doesn't require any comments
+![react app relations diagram](img/after_relations.png)
