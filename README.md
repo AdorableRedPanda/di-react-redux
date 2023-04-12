@@ -58,13 +58,15 @@ store usage. The cost - mo bugs, more code, fragile development and long onboard
 ## How to fix it?
 
 ### Theoretically 
-All the troubles we have in example is result of violation of on of SOLID principles - dependency inversion.
-I will use this states:
-* High-level modules should not use anything from low-level modules. Both should depend on abstractions.
+The issues in the example are caused by a violation of the Dependency Inversion principle, which can be summarized 
+as follows:
+
+* High-level modules should not depend on low-level modules. Both should depend on abstractions.
 * Abstractions should not depend on implementations. Implementations should depend on abstractions.
 
-If some component uses direct access to store - it uses the store realization with concrete paths and data.
-To fix it we have to make component dependent only of abstraction and make special way to store realize it.
+When a component directly accesses the store, it depends on the specific implementation of the store, including its 
+paths and data. To address this, we need to make the component dependent only on abstractions and create a special 
+way for the store to realize these abstractions.
 
 ### In practice
 
@@ -89,7 +91,7 @@ corresponding provider.
 
 What we got now:
 * separating components into independent green and blue groups, technical level dependencies between components are 
-minimized and the risk of bugs is reduced
+minimized and the risk of bugs is reduced (we almost exclude this kind of bugs)
 * writing tests for these components is simplified, as they don't rely on any store knowledge
 * these components can be easily reused with different data by changing the realization on the provider level
 * this approach makes it easier to onboard new team members since they can understand and work on each module separately
