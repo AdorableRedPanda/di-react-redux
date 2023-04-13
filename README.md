@@ -9,7 +9,7 @@ state manager in React applications - not about any specific state-manager, but 
 
 ## Average React state-management app troubles
 
-Okay, lets start from considering arbitrary React app diagram.
+Let's begin by considering a diagram of a React application.
 
 ![arbitrary react app using store diagram](img/before_tree.png)
 
