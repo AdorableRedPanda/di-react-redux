@@ -11,57 +11,55 @@ applications - not about any specific state-manager, but about approaches of its
 
 ## Average React state-management app troubles
 
-Let's begin by considering a diagram of a React application (without having to delve into the mundane code of yet 
-another to-do list).
+Let's begin by considering a diagram of a React application (without having to read the code of yet 
+another 'To-Do List' app).
 
 ![arbitrary react app using store diagram](img/before_tree.png)
 
 We have a data store that is being used by five red components: A, B, C, D, and E. Each component has direct access 
-to the store, like through the hooks like `useReducer` or `useSelector` in Redux. The details of the state management
-implementation are not important; what matters is that the components have knowledge of the inner structure of the 
-store and need to know the exact location of the data they require.
+to the store, like through the hooks `useReducer` or `useSelector` in Redux. The details of the state management
+implementation are not important; what matters is that components have knowledge of the inner structure of the 
+store - the location of the data they require.
 
-It's important to note that A and B are related to the same business logic and are completely independent of C, D, 
-and E. They work with different interface elements and different store fields. This information is not evident from 
-the diagram and highlights the need for clear documentation and design to ensure easy understanding and maintenance 
-of the codebase.
+It's important to note that A and B are related to the same business logic, but they are completely independent of C,
+D, and E. They work with different interface elements and different store fields - this is not evident from the 
+diagram, I need to highlight it (and it is needed to be highlighted in documentation and design - not self documented).
 
 What's wrong with this app?
 * It is difficult to determine which components are related by business logic and which are independent. For example, 
   there is no clear indication of the relationship between D and  E components, making them difficult to understand 
   without investigating their store usage.
-* All components share state, which can lead to bugs in one component affecting others
+* All components share common state - this can lead to bugs when one component affects others.
 * Testing any component requires setting up a test scenario, creating mock data for the store, and checking expected 
   store state. This can be time-consuming and difficult to manage.
-* New team members can be challenging because they need to have a deep understanding of the entire store and how 
-  it's used by all components. It's challenging to localize work and onboard team members part by part.
-* Reusing components is difficult - the C component is tied to specific paths in the store. The needs to get the similar
-view often leads to code duplication of C, D and E components. 
-have 
+* New team members would be challenging in work because they need to have a deep understanding of the entire store and 
+  how it's used by all components. It's challenging to localize work and onboard team members part by part.
+* Reusing components is difficult - the C component is tied to specific paths in the store. We can't reuse C 
+  component with different data in store without code duplication.
 
-Why this happened? Let's analyze the component's relations diagram in terms of 
+What could be the reasons for these issues? Let's analyze the component's relations diagram in terms of 
 [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) and 
 [cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science)).
 
-To put it simply, the coupling is metric that refers to how much different modules of a system rely on each other, 
+To put it simply, the coupling is a metric that refers to how much different modules of a system rely on each other, 
 cohesion - refers to how closely related and focused the elements within a module are. Low coupling and high cohesion
-are better in software because they make the code easier to work with and reduce the chances of unintended consequences 
-when making changes.
+are better in software development because they make the code easier to work with and reduce chances of unintended 
+consequences.
 
 ![arbitrary react app relations diagram](img/before_relations.png)
 
-The diagram depicts a simple structure with six components, but there are some issues with it:
+The diagram depicts a simple structure with six components, but there are some issues:
 * There are no clear modules in the code, with components A and B related in business-logic being lumped together
   with the others.
 * Every component is aware of the structure of the store.
 
 Despite these issues, it is still possible to work with this structure thanks to React's unidirectional data flow 
-and the independence of components. However, this approach can lead to more bugs, a larger codebase, and a more 
+and the independence of components. However, this approach could lead to more bugs, a larger codebase, and a more 
 fragile development process, as well as longer onboarding for new team members.
 
 ## How to fix it?
 
-### Theoretically 
+### In theory 
 The issues in the example are caused by a violation of the Dependency Inversion principle, which can be summarized 
 as follows:
 
@@ -74,8 +72,8 @@ way for the store to realize these abstractions.
 
 ### In practice
 
-In other frameworks such as Ninject for .NET or Angular (lets you get a feel for how DI works), a DI container is
-operates and replaces interfaces with class realizations during compile time.
+In other frameworks such as Ninject for .NET or Angular (strongly recommended if you want to feel how DI works), a DI 
+container works and replaces interfaces with class realizations during compile time.
 How to make it in React way - without classical compilation?
 
 [React Context](https://react.dev/learn/passing-data-deeply-with-context) allows us to provide a value to a
