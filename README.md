@@ -1,15 +1,18 @@
 # di-react-redux
 
-As a frontend developer, I have one most painful side in React everyday life. 
-This issue often comes up in casual conversations or job interviews so, I understand, 
-it is a burning question for many developers.
+As a frontend developer, I have one most painful side with the widespread practice of using state managers in React 
+applications - it's not about rerenderings, different state managers wars or bundle sizes.
+
+This issue is a common topic in casual conversations and job interviews, indicating that it is a significant concern 
+for many developers.
 
 I'm going to focus on the problem associated with the common practice of using a state manager in React 
 applications - not about any specific state-manager, but about approaches of its usages.
 
 ## Average React state-management app troubles
 
-Let's begin by considering a diagram of a React application.
+Let's begin by considering a diagram of a React application (without having to delve into the mundane code of yet 
+another to-do list).
 
 ![arbitrary react app using store diagram](img/before_tree.png)
 
@@ -99,5 +102,11 @@ minimized and the risk of bugs is reduced (we almost exclude this kind of bugs).
   separately.
 * By analyzing the abstraction level used in components, it's easier to understand whether they are related or not.
 
-The diagram of relations doesn't require any comments - we can see two separated modules now/
+The diagram of relations doesn't require any comments
 ![react app relations diagram](img/after_relations.png)
+
+In conclusion - following SOLID principles, using Context, and avoiding using store instance in every component, your 
+codebase will become more manageable, reusable, and scalable.
+
+While some developers may find the topics covered in this article to be obvious, I hope that others 
+will find them useful.
