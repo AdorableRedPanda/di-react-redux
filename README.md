@@ -13,31 +13,31 @@ Okay, lets start from considering arbitrary React app diagram.
 
 ![arbitrary react app using store diagram](img/before_tree.png)
 
-We have a store and five red components uses it - A, B, C, D and E. Every red component has direct access to store,
-for example - hooks `useReducer` or `useSelector` in case of Redux. It is not important which state manager you use
-here - it's important that components uses information about store's inner structure (for any data it has to know where
-exactly it is stored)
+We have a data store that is being used by five red components: A, B, C, D, and E. Each component has direct access 
+to the store, like through the hooks like `useReducer` or `useSelector` in Redux. The details of the state management
+implementation are not important; what matters is that the components have knowledge of the inner structure of the 
+store and need to know the exact location of the data they require.
 
-Additional information - A and B related with same logic, and it's completely independent of C, D, E - works with 
-different interface elements and different store fields etc. (it's important detail that is not clear from the diagram).
+It's important to note that A and B are related to the same business logic and are completely independent of C, D, 
+and E. They work with different interface elements and different store fields. This information is not evident from 
+the diagram and highlights the need for clear documentation and design to ensure easy understanding and maintenance 
+of the codebase.
 
 What's wrong with this app?
-* it is hard to understand which components are related by business logic, and which in are independent, for example -
- there is no information about D and E components (of course, you can find all paths in store they use and compare), 
-they are not self-documented
-* all components have shared state - if you work with one of them, you can create bug in any other 
-* as above, to test any component you have to write test scenario, mocks for store and expected store state - 
-too much store for component's test with other responsibility (even you don't write tests - component testability is 
- one of code quality metrics)
-* onboarding of new team member takes more time - to work with any component you have to know all about store and
-how other components uses it. You can't localize your work and can't onboard in codebase part by part.
-* you cannot reuse your components - the C component can work with concrete paths in store, the needs to get the similar
+* It is difficult to determine which components are related by business logic and which are independent. For example, 
+  there is no clear indication of the relationship between D and  E components, making them difficult to understand 
+  without investigating their store usage.
+* All components share state, which can lead to bugs in one component affecting others
+* Testing any component requires setting up a test scenario, creating mock data for the store, and checking expected 
+  store state. This can be time-consuming and difficult to manage.
+* New team members can be challenging because they need to have a deep understanding of the entire store and how 
+  it's used by all components. It's challenging to localize work and onboard team members part by part.
+* Reusing components is difficult - the C component is tied to specific paths in the store. The needs to get the similar
 view often leads to code duplication of C, D and E components. 
 have 
 
-Why this happened?
-Consider another picture - a diagram of connected components and look at it from the point
-of view of [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) and 
+Why this happened? Let's analyze the component's relations diagram in terms of 
+[coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) and 
 [cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science)).
 
 To put it simply, the coupling is metric that refers to how much different modules of a system rely on each other, 
@@ -45,15 +45,16 @@ cohesion - refers to how closely related and focused the elements within a modul
 are better in software because they make the code easier to work with and reduce the chances of unintended consequences 
 when making changes.
 
-
 ![arbitrary react app relations diagram](img/before_relations.png)
 
-What we have here? The picture looks very simple - with only six components but:
-* there is no modules in code (remember, A and B related in business-logic) - all components are piled together
-* every component knows about store structure
+The diagram depicts a simple structure with six components, but there are some issues with it:
+* There are no clear modules in the code, with components A and B related in business-logic being lumped together
+  with the others.
+* Every component is aware of the structure of the store.
 
-And it's ok, the component's independence and unidirectional data flow in React allows us to live with the worst structure
-store usage. The cost - mo bugs, more code, fragile development and long onboarding.
+Despite these issues, it is still possible to work with this structure thanks to React's unidirectional data flow 
+and the independence of components. However, this approach can lead to more bugs, a larger codebase, and a more 
+fragile development process, as well as longer onboarding for new team members.
 
 ## How to fix it?
 
@@ -90,12 +91,13 @@ corresponding provider.
 ![react app tree with providers diagram](img/after_tree.png)
 
 What we got now:
-* separating components into independent green and blue groups, technical level dependencies between components are 
-minimized and the risk of bugs is reduced (we almost exclude this kind of bugs)
-* writing tests for these components is simplified, as they don't rely on any store knowledge
-* these components can be easily reused with different data by changing the realization on the provider level
-* this approach makes it easier to onboard new team members since they can understand and work on each module separately
-*  by analyzing the abstraction level used in components, it's easier to understand whether they are related or not
+* Separating components into independent green and blue groups, technical level dependencies between components are 
+minimized and the risk of bugs is reduced (we almost exclude this kind of bugs).
+* Writing tests for these components is simplified, as they don't rely on any store knowledge.
+* These components can be easily reused with different data by changing the realization on the provider level.
+* This approach makes it easier to onboard new team members since they can understand and work on each module 
+  separately.
+* By analyzing the abstraction level used in components, it's easier to understand whether they are related or not.
 
-The diagram of relations doesn't require any comments
+The diagram of relations doesn't require any comments - we can see two separated modules now/
 ![react app relations diagram](img/after_relations.png)
