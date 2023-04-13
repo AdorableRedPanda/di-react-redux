@@ -4,8 +4,8 @@ As a frontend developer, I have one most painful side in React everyday life.
 This issue often comes up in casual conversations or job interviews so, I understand, 
 it is a burning question for many developers.
 
-I'm going to focus on the problem associated with the common practice of using a 
-state manager in React applications - not about any specific state-manager, but about approaches of its usages.
+I'm going to focus on the problem associated with the common practice of using a state manager in React 
+applications - not about any specific state-manager, but about approaches of its usages.
 
 ## Average React state-management app troubles
 
