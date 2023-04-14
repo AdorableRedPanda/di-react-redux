@@ -72,7 +72,7 @@ way for the store to realize these abstractions.
 
 ### In practice
 
-In other frameworks such as Ninject for .NET or Angular (strongly recommended if you want to feel how DI works), a DI 
+In other frameworks such as Ninject for .NET or Angular (highly recommended if you want to feel how DI works), a DI 
 container works and replaces interfaces with class realizations during compile time.
 How to make it in React way - without classical compilation?
 
