@@ -79,8 +79,8 @@ How to make it in React way - without classical compilation?
 [React Context](https://react.dev/learn/passing-data-deeply-with-context) allows us to provide a value to a
 component tree without having to pass it down through every level of the tree - it can be used in conjunction with 
 other techniques to create a simple form of DI container.
-We will use the context object as dependency marker (instead of interface) to resolving dependency inside container.
-`useContext` hook or `Context.Consumer` can be used to require realization through the context, while `Context.
+We will use the context object as dependency marker (instead of interface) to resolve dependency inside container.
+`useContext` hook or `Context.Consumer` can be used to get realization through the context, while `Context.
 Provider` can create a container for it.
 
 To simplify component-store relationships, we will adopt a straightforward approach. Components that use the store will
@@ -94,8 +94,8 @@ corresponding provider.
 What we got now:
 * Separating components into independent green and blue groups, technical level dependencies between components are 
 minimized and the risk of bugs is reduced (we almost exclude this kind of bugs).
-* Writing tests for these components is simplified, as they don't rely on any store knowledge.
-* These components can be easily reused with different data by changing the realization on the provider level.
+* Tests writing is simplified now, as components don't rely on any store knowledge.
+* These components can be easily reused with different data by changing the implementation on the provider level.
 * This approach makes it easier to onboard new team members since they can understand and work on each module 
   separately.
 * By analyzing the abstraction level used in components, it's easier to understand whether they are related or not.
@@ -103,7 +103,7 @@ minimized and the risk of bugs is reduced (we almost exclude this kind of bugs).
 The diagram of relations doesn't require any comments
 ![react app relations diagram](img/after_relations.png)
 
-In conclusion - following SOLID principles, using Context, and avoiding using store instance in every component, your 
+In conclusion - following SOLID principles, using Context, and avoiding usage of store instance in every component, your 
 codebase will become more manageable, reusable, and scalable.
 
 While some developers may find the topics covered in this article to be obvious, I hope that others 
