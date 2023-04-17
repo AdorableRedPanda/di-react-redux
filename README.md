@@ -32,8 +32,8 @@ What's wrong with this app?
 * All components share common state - this can lead to bugs when one component affects others.
 * Testing any component requires setting up a test scenario, creating mock data for the store, and checking expected 
   store state. This can be time-consuming and difficult to manage.
-* New team members would be challenging in work because they need to have a deep understanding of the entire store and 
-  how it's used by all components. It's challenging to localize work and onboard team members part by part.
+* It would be challenging for new team members to onboard, because they need to have a deep 
+  understanding of the entire store and how it's used by all components. It's challenging to localize work part by part.
 * Reusing components is difficult - the C component is tied to specific paths in the store. We can't reuse C 
   component with different data in store without code duplication.
 
@@ -55,7 +55,7 @@ The diagram depicts a simple structure with six components, but there are some i
 
 Despite these issues, it is still possible to work with this structure thanks to React's unidirectional data flow 
 and the independence of components. However, this approach could lead to more bugs, a larger codebase, and a more 
-fragile development process, as well as longer onboarding for new team members.
+fragile development process, as well as a longer onboarding for new team members.
 
 ## How to fix it?
 
@@ -68,7 +68,7 @@ as follows:
 
 When a component directly accesses the store, it depends on the specific implementation of the store, including its 
 paths and data. To address this, we need to make the component dependent only on abstractions and create a special 
-way for the store to realize these abstractions.
+way for the store to implement these abstractions.
 
 ### In practice
 
@@ -80,7 +80,7 @@ How to make it in React way - without classical compilation?
 component tree without having to pass it down through every level of the tree - it can be used in conjunction with 
 other techniques to create a simple form of DI container.
 We will use the context object as dependency marker (instead of interface) to resolve dependency inside container.
-`useContext` hook or `Context.Consumer` can be used to get realization through the context, while `Context.
+`useContext` hook or `Context.Consumer` can be used to get implementation through the context, while `Context.
 Provider` can create a container for it.
 
 To simplify component-store relationships, we will adopt a straightforward approach. Components that use the store will
