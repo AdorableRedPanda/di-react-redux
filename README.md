@@ -1,6 +1,6 @@
 # di-react-redux
 
-As a frontend developer, I have one most painful side with the widespread practice of using state managers in React 
+As a frontend dev, I'm quite familiar with that painful side of the widespread practice of using state managers in React 
 applications - it's not about rerenderings, different state managers wars or bundle sizes.
 
 This issue is a common topic in casual conversations and job interviews, indicating that it is a significant concern 
