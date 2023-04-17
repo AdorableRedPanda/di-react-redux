@@ -73,8 +73,8 @@ way for the store to implement these abstractions.
 ### In practice
 
 In other frameworks such as Ninject for .NET or Angular (highly recommended if you want to feel how DI works), a DI 
-container works and replaces interfaces with class realizations during compile time.
-How to make it in React way - without classical compilation?
+container works and replaces interfaces with class realizations during compile time. However, in React, which does 
+not rely on classical compilation, a different approach is needed to implement dependency injection.
 
 [React Context](https://react.dev/learn/passing-data-deeply-with-context) allows us to provide a value to a
 component tree without having to pass it down through every level of the tree - it can be used in conjunction with 
