@@ -1,4 +1,4 @@
-# di-react-redux
+# DI in React - solving most painful troubles
 
 As a frontend dev, I'm quite familiar with that painful side of the widespread practice of using state managers in React 
 applications - it's not about rerenderings, different state managers wars or bundle sizes.
